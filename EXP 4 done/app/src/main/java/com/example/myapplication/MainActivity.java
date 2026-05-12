@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     RadioGroup RG;
     CheckBox football,cricket,basketball;
     Button submit;
-    TextView resulttf;
+
 
 
     @Override
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         cricket = findViewById(R.id.Cricket);
         basketball = findViewById(R.id.Basket_Ball);
         submit = findViewById(R.id.Submit);
-        resulttf = findViewById(R.id.Result);
+
 
         String[] branch = {"Cs","IT","ENTC"};
         ArrayAdapter<String> adapter =  new ArrayAdapter<>(
@@ -94,7 +95,10 @@ public class MainActivity extends AppCompatActivity {
 
 
                 String outpout = "Name : " + username + "\nBranch : " + branch + "\nGender : " + gender + "\nSports : " + sports;
-                resulttf.setText(outpout);
+
+                Intent i = new Intent(MainActivity.this,ResultActivity.class);
+                i.putExtra("data",outpout);
+                startActivity(i);
             }
         });
 
