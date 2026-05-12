@@ -1,0 +1,135 @@
+perminission - Andriod Manifest
+-----------------------------------------------------------------
+
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+
+
+
+
+
+
+
+java
+-----------------------------------------------------------------
+package com.example.exp6webviewpractice;
+
+import android.os.Bundle;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.EditText;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity extends AppCompatActivity {
+
+    WebView webview;
+    Button button;
+
+    EditText URLtext;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        webview = findViewById(R.id.Webview1);
+        button = findViewById(R.id.button);
+        URLtext = findViewById(R.id.editTextText);
+
+        webview.getSettings().setJavaScriptEnabled(true);
+        webview.setWebViewClient(new WebViewClient());
+        webview.setWebChromeClient(new WebChromeClient());
+
+        webview.loadUrl("https://www.google.com");
+
+        button.setOnClickListener(view -> {
+
+            String URL = URLtext.getText().toString();
+
+            if(!URL.startsWith("https://")){
+                URL = "https://"+URL;
+            }
+            webview.loadUrl(URL);
+        });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (webview.canGoBack()){
+            webview.goBack();
+        }
+        else {
+            super.onBackPressed();
+        }
+
+    }
+}
+
+
+
+
+
+
+
+main activity xml 
+-----------------------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="WebView"
+        android:textSize="25dp"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:background="#FF0000"
+
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Name" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FF0000"
+            android:text="Submit" />
+
+    </LinearLayout>
+
+    <WebView
+        android:id="@+id/Webview1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp" />
+</LinearLayout>

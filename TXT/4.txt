@@ -1,0 +1,277 @@
+MainActivity.java
+---------------------------------------------------------------------------------
+package com.example.myapplication;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText name;
+    Spinner spinner;
+    RadioGroup RG;
+    CheckBox football,cricket,basketball;
+    Button submit;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
+        name = findViewById(R.id.Name_TF);
+        spinner = findViewById(R.id.spinner);
+        RG = findViewById(R.id.Radiogroup);
+        football = findViewById(R.id.Football);
+        cricket = findViewById(R.id.Cricket);
+        basketball = findViewById(R.id.Basket_Ball);
+        submit = findViewById(R.id.Submit);
+
+
+        String [] Branches = {"CS","IT","ENTC"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,Branches);
+        spinner.setAdapter(adapter);
+
+        submit.setOnClickListener(view -> {
+            String Namestring = name.getText().toString();
+            String Branchstring = spinner.getSelectedItem().toString();;
+
+            String Genderstring = "Not Selected";
+            int id = RG.getCheckedRadioButtonId();
+            RadioButton selecrtedRB = findViewById(id);
+            Genderstring = selecrtedRB.getText().toString();
+
+            String Sports = "";
+
+            if(football.isChecked()){
+                Sports += "Football ";
+            }
+            if(cricket.isChecked()){
+                Sports += "cricket ";
+            }
+            if(basketball.isChecked()){
+                Sports += "basketball ";
+            }
+
+            String Resultstring = "Name : " + Namestring + "\nBrach : " + Branchstring + "\nGender : " + Genderstring + "\nSports : " + Sports ;
+
+            Intent i = new Intent(this,ResultActivity.class);
+            i.putExtra("Data",Resultstring);
+            startActivity(i);
+        });
+
+    }
+}
+
+
+
+
+
+
+ResultActivity.javaResultActivity.java---------------------------------------------------------------------------------
+package com.example.myapplication;
+
+import android.os.Bundle;
+import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class ResultActivity extends AppCompatActivity {
+
+    TextView result;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_result);
+
+        result = findViewById(R.id.resultText);
+
+        String Data = getIntent().getStringExtra("Data");
+        result.setText(Data);
+
+
+
+    }
+}
+
+
+
+
+activity_result.xml
+---------------------------------------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registration Successfull !"
+        android:layout_gravity="center"
+        android:textSize="25dp"
+        />
+
+    <TextView
+        android:id="@+id/resultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"/>
+
+</LinearLayout>
+
+
+
+
+
+
+
+
+activity_main.xml
+---------------------------------------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <LinearLayout
+        android:id="@+id/main1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Student Registration :"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/Name_TF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter your name "
+            android:inputType="text" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Enter your Branch :" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Select Gender :" />
+
+        <RadioGroup
+            android:id="@+id/Radiogroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/Male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Male" />
+
+            <RadioButton
+                android:id="@+id/Female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Female" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Enter Intrested Sports :" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/Football"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Football" />
+
+            <CheckBox
+                android:id="@+id/Cricket"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cricket" />
+
+            <CheckBox
+                android:id="@+id/Basket_Ball"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Basket Ball" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/Submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit" />
+
+           </LinearLayout>
+</ScrollView>

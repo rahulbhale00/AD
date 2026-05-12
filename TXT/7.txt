@@ -1,0 +1,184 @@
+ImageAdapter.java
+-----------------------------------------------------------------
+package com.example.exp7sliderpractice;
+
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder> {
+
+    int[] images;
+
+    public ImageAdapter(int[] images) {
+        this.images = images;
+    }
+
+    @NonNull
+    @Override
+    public MyViewHolder onCreateViewHolder(
+            @NonNull ViewGroup parent,
+            int viewType) {
+
+        ImageView imageView =
+                new ImageView(parent.getContext());
+
+        imageView.setLayoutParams(
+                new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                )
+        );
+
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+        return new MyViewHolder(imageView);
+    }
+
+    @Override
+    public void onBindViewHolder(
+            @NonNull MyViewHolder holder,
+            int position) {
+
+        holder.imageView.setImageResource(images[position]);
+    }
+
+    @Override
+    public int getItemCount() {
+        return images.length;
+    }
+
+    static class MyViewHolder extends RecyclerView.ViewHolder {
+
+        ImageView imageView;
+
+        public MyViewHolder(@NonNull ImageView itemView) {
+            super(itemView);
+
+            imageView = itemView;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+java
+-----------------------------------------------------------------
+
+
+package com.example.exp7sliderpractice;
+
+import android.os.Bundle;
+import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
+
+public class MainActivity extends AppCompatActivity {
+
+    ViewPager2 viewPager;
+
+    Button back, next;
+
+    int[] images = {
+            R.drawable.img1,
+            R.drawable.img2,
+            R.drawable.img3
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        viewPager = findViewById(R.id.viewPager);
+
+        back = findViewById(R.id.back);
+
+        next = findViewById(R.id.next);
+
+        ImageAdapter adapter =
+                new ImageAdapter(images);
+
+        viewPager.setAdapter(adapter);
+
+        next.setOnClickListener(v -> {
+
+            int current =
+                    viewPager.getCurrentItem();
+
+            if(current < images.length - 1){
+
+                viewPager.setCurrentItem(current + 1);
+            }
+        });
+
+        back.setOnClickListener(v -> {
+
+            int current =
+                    viewPager.getCurrentItem();
+
+            if(current > 0){
+
+                viewPager.setCurrentItem(current - 1);
+            }
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+main activity xml 
+-----------------------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="10dp">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Back"/>
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Next"/>
+    </LinearLayout>
+
+</LinearLayout>
