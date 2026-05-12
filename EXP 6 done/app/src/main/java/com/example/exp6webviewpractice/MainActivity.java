@@ -1,8 +1,11 @@
 package com.example.exp6webviewpractice;
 
 import android.os.Bundle;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,26 +16,45 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
 
     WebView webview;
+    Button button;
 
+    EditText URLtext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         webview = findViewById(R.id.Webview1);
-
-        webview.setWebViewClient(new WebViewClient());
+        button = findViewById(R.id.button);
+        URLtext = findViewById(R.id.editTextText);
 
         webview.getSettings().setJavaScriptEnabled(true);
+        webview.setWebViewClient(new WebViewClient());
+        webview.setWebChromeClient(new WebChromeClient());
 
-        webview.loadUrl("https://www.youtube.com");
+        webview.loadUrl("https://www.google.com");
 
+        button.setOnClickListener(view -> {
+
+            String URL = URLtext.getText().toString();
+
+            if(!URL.startsWith("https://")){
+                URL = "https://"+URL;
+            }
+            webview.loadUrl(URL);
+        });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (webview.canGoBack()){
+            webview.goBack();
+        }
+        else {
+            super.onBackPressed();
+        }
 
     }
 }
