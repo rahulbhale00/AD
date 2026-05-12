@@ -31,14 +31,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main1), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
 
 
         name = findViewById(R.id.Name_TF);
@@ -50,56 +43,36 @@ public class MainActivity extends AppCompatActivity {
         submit = findViewById(R.id.Submit);
 
 
-        String[] branch = {"Cs","IT","ENTC"};
-        ArrayAdapter<String> adapter =  new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_dropdown_item,
-                branch
-        );
+        String [] Branches = {"CS","IT","ENTC"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,Branches);
         spinner.setAdapter(adapter);
 
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                HandleClick();
+        submit.setOnClickListener(view -> {
+            String Namestring = name.getText().toString();
+            String Branchstring = spinner.getSelectedItem().toString();;
+
+            String Genderstring = "Not Selected";
+            int id = RG.getCheckedRadioButtonId();
+            RadioButton selecrtedRB = findViewById(id);
+            Genderstring = selecrtedRB.getText().toString();
+
+            String Sports = "";
+
+            if(football.isChecked()){
+                Sports += "Football ";
+            }
+            if(cricket.isChecked()){
+                Sports += "cricket ";
+            }
+            if(basketball.isChecked()){
+                Sports += "basketball ";
             }
 
-            private void HandleClick() {
+            String Resultstring = "Name : " + Namestring + "\nBrach : " + Branchstring + "\nGender : " + Genderstring + "\nSports : " + Sports ;
 
-                //get name
-                String username = name.getText().toString();
-
-                //get spinner
-                String branch = spinner.getSelectedItem().toString();
-
-                //gender
-                String gender = "not selected";
-                int id = RG.getCheckedRadioButtonId();
-                RadioButton seletcedbutton = findViewById(id);
-                gender = seletcedbutton.getText().toString();
-
-                //sport
-
-                String sports = "";
-
-                if (football.isChecked()) {
-                    sports += "football ";
-                }
-
-                if (basketball.isChecked()) {
-                    sports += "basketball ";
-                }
-                if (cricket.isChecked()) {
-                    sports += "cricket ";
-                }
-
-
-                String outpout = "Name : " + username + "\nBranch : " + branch + "\nGender : " + gender + "\nSports : " + sports;
-
-                Intent i = new Intent(MainActivity.this,ResultActivity.class);
-                i.putExtra("data",outpout);
-                startActivity(i);
-            }
+            Intent i = new Intent(this,ResultActivity.class);
+            i.putExtra("Data",Resultstring);
+            startActivity(i);
         });
 
     }

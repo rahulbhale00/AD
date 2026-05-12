@@ -21,9 +21,9 @@ public class ResultActivity extends AppCompatActivity {
 
         result = findViewById(R.id.resultText);
 
-        String Data = getIntent().getStringExtra("data").toString();
-
+        String Data = getIntent().getStringExtra("Data");
         result.setText(Data);
+
 
 
     }
